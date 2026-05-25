@@ -39,13 +39,23 @@ char* file_read(const char *path, size_t *size) {
 }
 
 char* file_normalize_path(const char *requested_path, const char *root) {
-    if (strstr(requested_path, "..") != NULL) {
-        return NULL;
-    }
-
     char full_path[PATH_MAX];
+    char real_path[PATH_MAX];
+    
     snprintf(full_path, PATH_MAX, "%s%s", root, requested_path);
 
-    return strdup(full_path);
-
+    if (!realpath(full_path, real_path)) {
+        return NULL; 
+    }
+    
+    char root_real[PATH_MAX];
+    if (!realpath(root, root_real)) {
+        return NULL;
+    }
+    
+    if (strncmp(real_path, root_real, strlen(root_real)) != 0) {
+        return NULL; 
+    }
+    
+    return strdup(real_path);
 }
