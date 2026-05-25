@@ -35,5 +35,5 @@ make
 curl http://localhost:8080/
 curl http://localhost:8080/style.css
 curl -X POST http://localhost:8080/  # Debe dar 405
-curl http://localhost:8080/../../etc/passwd  # Debe rechazar
+curl -i --path-as-is http://localhost:8080/../../etc/passwd  # Debe rechazar
 ```
