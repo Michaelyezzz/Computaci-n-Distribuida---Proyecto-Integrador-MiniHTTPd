@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>MiniHTTPd</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniHTTPd Control Panel</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>¡Bienvenido a MiniHTTPd!</h1>
-    <p>Servidor HTTP/1.1 básico en C</p>
+    <div class="container">
+        <header class="server-header">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Servidor en línea</span>
+            </div>
+            <h1>MiniHTTPd</h1>
+            <p class="subtitle">Servidor Web de Alto Rendimiento HTTP/1.1 en C</p>
+        </header>
+
+        <main class="dashboard-grid">
+            <div class="card">
+                <h3>Arquitectura</h3>
+                <p>Implementado con un bucle de eventos asíncronos basado en el kernel de Linux usando <strong>epoll</strong>.</p>
+            </div>
+
+            <div class="card">
+                <h3>Conexiones</h3>
+                <p>Soporte nativo para conexiones persistentes <strong>Keep-Alive</strong>, optimizando la reutilización de sockets TCP.</p>
+            </div>
+
+            <div class="card">
+                <h3>Seguridad y MIME</h3>
+                <p>Validación de tipos de contenido automatizada mediante mapeo estricto de extensiones y aislamiento de recursos.</p>
+            </div>
+        </main>
+
+        footer class="server-footer">
+            <p>Computación Distribuida &copy; 2026 | Entorno de desarrollo: WSL Linux Kernel</p>
+        </footer>
+    </div>
 </body>
 </html>

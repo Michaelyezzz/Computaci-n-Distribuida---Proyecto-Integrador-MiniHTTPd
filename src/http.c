@@ -9,11 +9,9 @@
 int http_parse_request(const char *raw_request, http_request_t *req) {
     if (!raw_request || !req) return -1;
     
-    // Crear copia para no modificar el original
     char *dup = strdup(raw_request);
     char *saveptr = NULL;
     
-    // Parsear primera línea: METHOD URI VERSION
     char *line = strtok_r(dup, "\r\n", &saveptr);
     if (!line) {
         free(dup);
@@ -25,13 +23,11 @@ int http_parse_request(const char *raw_request, http_request_t *req) {
         return -1;
     }
     
-    // Inicializar headers
     memset(req->host, 0, sizeof(req->host));
     memset(req->connection, 0, sizeof(req->connection));
     memset(req->user_agent, 0, sizeof(req->user_agent));
     strcpy(req->connection, "close"); // default
     
-    // Parsear headers
     while ((line = strtok_r(NULL, "\r\n", &saveptr)) && strlen(line) > 0) {
         char header[256], value[512];
         if (sscanf(line, "%255[^:]: %511[^\r\n]", header, value) == 2) {
@@ -71,27 +67,30 @@ const char* http_status_text(int code) {
     switch (code) {
         case 200: return "OK";
         case 400: return "Bad Request";
-        case 403: return "Forbidden";
+        case 403: return "Forbidden";      
         case 404: return "Not Found";
-        case 405: return "Method Not Allowed";
+        case 405: return "Method Not Allowed"; 
         case 500: return "Internal Server Error";
-        default: return "Unknown";
+        default:  return "Unknown Status";
     }
 }
 
 char* http_serialize_response(http_response_t *resp, size_t *total_len) {
     char *response = malloc(8192);
     
+    const char *conn_status = (resp->status_code == 200) ? "keep-alive" : "close";
+
     int header_len = snprintf(response, 8192,
         "HTTP/1.1 %d %s\r\n"
         "Content-Type: %s\r\n"
         "Content-Length: %zu\r\n"
-        "Connection: close\r\n"
+        "Connection: %s\r\n"
         "\r\n",
         resp->status_code,
         http_status_text(resp->status_code),
         resp->content_type,
-        resp->content_length
+        resp->content_length,
+        conn_status
     );
     
     *total_len = header_len + resp->content_length;

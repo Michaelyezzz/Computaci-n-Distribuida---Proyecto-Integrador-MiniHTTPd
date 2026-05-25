@@ -28,6 +28,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
+    if (server_init(global_server) == -1) {
+        fprintf(stderr, "Error al inicializar servidor\n");
+        server_destroy(global_server);
+        return 1;
+    }
+    
     server_run(global_server);
     
     return 0;

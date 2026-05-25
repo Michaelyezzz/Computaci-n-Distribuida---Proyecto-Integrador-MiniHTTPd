@@ -6,7 +6,8 @@
 
 #define MAX_CLIENTS 1024
 #define MAX_EVENTS 64
-#define BUFFER_SIZE 8192
+#define BUFFER_SIZE 4096
+#define QLEN 128
 
 typedef struct {
     int fd;
@@ -22,6 +23,7 @@ typedef struct {
 } server_t;
 
 server_t* server_create(int port);
+int server_init(server_t *server);
 void server_run(server_t *server);
 void server_destroy(server_t *server);
 
